@@ -1,0 +1,36 @@
+volumes:
+  postgres-data:
+
+
+services:
+  django:
+    build:
+      context: .
+    restart: always
+    container_name: graphql_django
+    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - postgres
+    environment:
+      - SECRET_KEY=notasecret
+      - DEBUG=true
+      - POSTGRES_DB=graphql_example
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    volumes:
+      - ./:/app
+    ports:
+      - "8000:8000"
+
+  postgres:
+    restart: always
+    container_name: graphql_postgres
+    image: postgres:14
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=graphql_example
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    ports:
+      - "5432:5432"
