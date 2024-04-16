@@ -1,12 +1,6 @@
-import json
-
-from django.contrib.auth import get_user_model, get_user
+from django.contrib.auth import get_user_model
 import graphene
 from graphene_django import DjangoObjectType
-from graphql import GraphQLError, validate, parse
-from graphql.language import FieldNode
-from graphql.validation import ValidationRule
-from graphene.validation import DisableIntrospection
 
 from core import models
 
@@ -27,7 +21,9 @@ def check_permission(permission_name: str):
     def check_permission_decorator(func):
         def wrapper(self, info, *args, **kwargs):
             if not info.context.user.has_perm(permission_name):
-                raise AuthorizationError('Cannot query field "user" on type "Query" error for the same query and is not able to execute it')
+                raise AuthorizationError(
+                    'Cannot query field "user" on type "Query" error for the same query and is not able to execute it'
+                )
             return func(self, info, *args, **kwargs)
         return wrapper
     return check_permission_decorator
