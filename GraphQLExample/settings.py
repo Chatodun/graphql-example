@@ -82,7 +82,7 @@ DATABASES = {
         'NAME': os.environ.get('POSTGRES_DB'),
         'USER': os.environ.get('POSTGRES_USER'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': 'postgres',
+        'HOST': os.environ.get('POSTGRES_HOST'),
         'PORT': '5432',
     }
 }
@@ -134,8 +134,5 @@ LOGIN_REDIRECT_URL = "/"
 
 GRAPHENE = {
     "SCHEMA": "core.schema.schema",
-    "MIDDLEWARE": (
-        "core.middleware.HideIntrospectMiddleware",
-    ),
 }
 
